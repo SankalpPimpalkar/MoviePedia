@@ -2,11 +2,22 @@ import { Button, Container } from '@mui/material'
 import { useAuth } from '../../context/AuthProvider'
 import { Link, useNavigate } from 'react-router'
 import { Search } from "lucide-react"
+import { usersAPI } from '../../api/api'
 
 export default function Navbar() {
 
-    const { isAuthenticated, user } = useAuth()
+    const { isAuthenticated, user, refetch } = useAuth()
     const navigate = useNavigate()
+
+    async function handleLogout() {
+        try {
+            await usersAPI.logout()
+            refetch()
+            navigate("/")
+        } catch (error) {
+            throw new Error(error instanceof Error ? error.message : "Something went wrong")
+        }
+    }
 
     return (
         <nav className='bg-[#1a1a1a] text-white p-4 sticky top-0 z-50'>
@@ -23,9 +34,14 @@ export default function Navbar() {
 
                     {
                         isAuthenticated ? (
-                            <p>
-                                Hello, {user?.name}
-                            </p>
+                            <span className='flex items-center gap-4'>
+                                <p className='text-sm'>
+                                    Hello, {user?.name}
+                                </p>
+                                <Button onClick={handleLogout} size='small' variant="text" color='error'>
+                                    Logout
+                                </Button>
+                            </span>
                         ) :
                             (
                                 <Button onClick={() => navigate("/auth/login")} size='small' variant="text">

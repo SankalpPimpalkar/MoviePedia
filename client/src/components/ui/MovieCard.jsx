@@ -1,14 +1,29 @@
-import { Rating } from '@mui/material'
+import { Rating } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import { Link } from 'react-router';
+import { Link } from "react-router";
 
 export default function MovieCard({ movie }) {
     return (
-        <Link to={`/movies/${movie._id}`} className='col-span-1 space-y-1'>
-            <img className='aspect-2/3 duration-500 rounded' src={movie.poster} alt="" />
+        <Link
+            to={`/movies/${movie._id}`}
+            className="space-y-2 group"
+        >
+            <img
+                src={movie.poster}
+                alt={movie.title}
+                className="
+                    aspect-2/3
+                    w-full
+                    object-cover
+                    rounded-lg
+                    transition-transform
+                    duration-300
+                    group-hover:scale-[1.03]
+                    "
+            />
+
             <Rating
-                className='pt-2'
                 size="small"
                 value={movie.rating}
                 max={10}
@@ -17,12 +32,16 @@ export default function MovieCard({ movie }) {
                 icon={<StarIcon fontSize="small" />}
                 emptyIcon={<StarBorderIcon fontSize="small" />}
             />
-            <h3 className='font-bold text-lg'>
+
+            <h3 className="font-semibold text-sm text-white line-clamp-1">
                 {movie.title}
             </h3>
-            <p className='text-gray-600 text-sm'>
-                {new Date(movie.releaseDate).getFullYear()}
+
+            <p className="text-gray-500 text-xs">
+                {movie.releaseDate
+                    ? new Date(movie.releaseDate).getFullYear()
+                    : "—"}
             </p>
         </Link>
-    )
+    );
 }

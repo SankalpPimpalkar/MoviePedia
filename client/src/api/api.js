@@ -31,7 +31,10 @@ export const moviesAPI = {
     },
     getAllMovies: async () => {
         const response = await AXIOS.get('/movies')
-        console.log(response)
+        return response.data
+    },
+    getSearchedMovies: async (q, page, sort, order) => {
+        const response = await AXIOS.get(`/movies/search?q=${q}&page=${page}&sort=${sort}&order=${order}`)
         return response.data
     },
     getMovieById: async (id) => {

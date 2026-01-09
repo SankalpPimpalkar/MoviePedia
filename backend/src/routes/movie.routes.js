@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { createMovie, deleteMovie, getMovieById, getMovies, updateMovie } from "../controllers/movie.controller.js"
+import { createMovie, deleteMovie, getMovieById, getMovies, searchMovies, updateMovie } from "../controllers/movie.controller.js"
 import authenticate from "../middlewares/authenticate.middleware.js"
 import isAdmin from "../middlewares/isadmin.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
@@ -7,6 +7,7 @@ import { upload } from "../middlewares/multer.middleware.js"
 const movieRouter = Router()
 
 movieRouter.get('/', getMovies)
+movieRouter.get('/search', searchMovies)
 movieRouter.get('/:id', getMovieById)
 movieRouter.post('/', authenticate, isAdmin, upload.single('poster'), createMovie)
 movieRouter.put('/:id', authenticate, isAdmin, updateMovie)

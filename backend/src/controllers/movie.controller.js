@@ -75,6 +75,64 @@ export async function getMovies(req, res) {
     }
 }
 
+export async function searchMovies(req, res) {
+    try {
+        const {
+            q,                
+            page = 1,         
+            sort = "createdAt",  
+            order = "desc"      
+        } = req.query;
+
+        const PAGE_SIZE = 20;
+        const skip = (Number(page) - 1) * PAGE_SIZE;
+
+        const filter = {};
+
+        // 🔍 Search by title + description
+        if (q.trim()) {
+            filter.$or = [
+                { title: { $regex: q, $options: "i" } },
+                { description: { $regex: q, $options: "i" } }
+            ];
+        }
+
+        // 🔃 Sorting logic
+        const allowedSortFields = ["rating", "releaseDate", "duration", "createdAt"];
+        const sortField = allowedSortFields.includes(sort) ? sort : "createdAt";
+
+        const sortOrder = order === "asc" ? 1 : -1;
+
+        const moviesQuery = Movie.find(filter)
+            .sort({ [sortField]: sortOrder });
+
+        // 📄 Pagination only when NOT searching
+        if (!q.trim()) {
+            moviesQuery.skip(skip).limit(PAGE_SIZE);
+        }
+
+        const [movies, total] = await Promise.all([
+            moviesQuery,
+            Movie.countDocuments(filter)
+        ]);
+
+        return res.status(200).json({
+            page: q ? null : Number(page),
+            pageSize: q ? movies.length : PAGE_SIZE,
+            total,
+            count: movies.length,
+            movies
+        });
+
+    } catch (error) {
+        console.error("Error in Get Movies:", error);
+        return res
+            .status(500)
+            .json({ message: "Internal Server Error" });
+    }
+}
+
+
 export async function getMovieById(req, res) {
     try {
         const { id } = req.params;

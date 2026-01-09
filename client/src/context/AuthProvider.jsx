@@ -1,46 +1,54 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { usersAPI } from "../api/api";
 
 const AuthContext = createContext({
     user: null,
     isAuthenticated: false,
-    isLoading: false,
-})
+    isLoading: true,
+    refetch: async () => { }
+});
 
 export default function AuthContextProvider({ children }) {
+    const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [user, setUser] = useState(null)
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    const refetch = useCallback(async () => {
+        try {
+            setIsLoading(true);
+            const response = await usersAPI.getCurrentUser();
+
+            if (response?.user) {
+                setUser(response.user);
+                setIsAuthenticated(true);
+            } else {
+                setUser(null);
+                setIsAuthenticated(false);
+            }
+        } catch (error) {
+            setUser(null);
+            setIsAuthenticated(false);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        (async () => {
-            try {
-                setIsLoading(true)
-                const response = await usersAPI.getCurrentUser()
-                if (response.user) {
-                    setUser(response.user)
-                    setIsAuthenticated(true)
-                }
-            } catch (error) {
-                throw new Error(error instanceof Error ? error.message : "Error Occured in Getting User")
-            } finally {
-                setIsLoading(false)
-            }
-        })()
-    }, [])
+        refetch();
+    }, [refetch]);
 
-    const values = {
+    const value = useMemo(() => ({
         user,
         isAuthenticated,
-        isLoading
-    }
+        isLoading,
+        refetch
+    }), [user, isAuthenticated, isLoading, refetch]);
 
     return (
-        <AuthContext.Provider value={values}>
+        <AuthContext.Provider value={value}>
             {children}
         </AuthContext.Provider>
-    )
+    );
 }
 
-export const useAuth = () => useContext(AuthContext)
+export const useAuth = () => useContext(AuthContext);
