@@ -33,9 +33,27 @@ export const moviesAPI = {
         const response = await AXIOS.get('/movies')
         return response.data
     },
-    getSearchedMovies: async ({ q = "", page = 1, sort = "createdAt", order = "desc", genres = "" }) => {
-        const response = await AXIOS.get(`/movies/search?q=${q}&page=${page}&sort=${sort}&order=${order}&genres=${genres}`)
-        return response.data
+    getSearchedMovies: async ({
+        q,
+        page,
+        sort,
+        order,
+        genres
+    } = {}) => {
+        const params = {};
+
+        if (q) params.q = q;
+        if (page) params.page = page;
+        if (sort) params.sort = sort;
+        if (order) params.order = order;
+        if (genres) params.genres = genres;
+
+        const queryString = new URLSearchParams(params).toString();
+        const response = await AXIOS.get(
+            `/movies/search${queryString ? `?${queryString}` : ""}`
+        );
+
+        return response.data;
     },
     getMovieById: async (id) => {
         const response = await AXIOS.get(`/movies/${id}`)
