@@ -90,7 +90,7 @@ export default function MovieDetails() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto px-4 pt-6 text-white space-y-10">
+        <div className="max-w-6xl mx-auto py-4 px-0 sm:py-6 text-white space-y-10">
             {/* 🔹 Movie Details */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Poster */}
@@ -160,7 +160,7 @@ export default function MovieDetails() {
                 {isLoadingRecommendations ? (
                     <p className="text-gray-400">Loading recommendations...</p>
                 ) : recommended.length > 0 ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-6 gap-4">
                         {recommended.map((rec) => (
                             <MovieCard key={rec._id} movie={rec} />
                         ))}

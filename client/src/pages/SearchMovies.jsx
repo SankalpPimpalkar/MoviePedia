@@ -81,7 +81,7 @@ export default function SearchMovies() {
                 />
             </div>
 
-            <div className="pt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            <div className="pt-6 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {isLoadingMovies ? (
                     Array.from({ length: 8 }).map((_, index) => (
                         <MovieCardSkeleton key={index} />
