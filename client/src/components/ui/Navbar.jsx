@@ -1,7 +1,7 @@
 import { Button, Container } from '@mui/material'
 import { useAuth } from '../../context/AuthProvider'
 import { Link, useNavigate } from 'react-router'
-import { Search } from "lucide-react"
+import { Plus, Search } from "lucide-react"
 import { usersAPI } from '../../api/api'
 
 export default function Navbar() {
@@ -38,6 +38,9 @@ export default function Navbar() {
                                 <p className='text-sm'>
                                     Hello, {user?.name}
                                 </p>
+                                <Button onClick={() => navigate("/add-movie")} size='small' variant="text" color='primary'>
+                                    Add Movie
+                                </Button>
                                 <Button onClick={handleLogout} size='small' variant="text" color='error'>
                                     Logout
                                 </Button>

@@ -18,7 +18,10 @@ export default function SearchMovies() {
         (async () => {
             try {
                 setIsLoadingMovies(true);
-                const response = await moviesAPI.getSearchedMovies(debouncedSearch);
+                const response = await moviesAPI.getSearchedMovies({
+                    q: debouncedSearch
+                });
+                console.log(response)
 
                 if (Array.isArray(response.movies)) {
                     setMovies(response.movies);
@@ -50,7 +53,6 @@ export default function SearchMovies() {
 
     return (
         <div className="pt-6">
-            {/* 🔍 Search Bar */}
             <div
                 className="
                     flex items-center gap-3

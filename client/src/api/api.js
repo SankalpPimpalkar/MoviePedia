@@ -33,8 +33,8 @@ export const moviesAPI = {
         const response = await AXIOS.get('/movies')
         return response.data
     },
-    getSearchedMovies: async (q, page, sort, order) => {
-        const response = await AXIOS.get(`/movies/search?q=${q}&page=${page}&sort=${sort}&order=${order}`)
+    getSearchedMovies: async ({ q = "", page = 1, sort = "createdAt", order = "desc", genres = "" }) => {
+        const response = await AXIOS.get(`/movies/search?q=${q}&page=${page}&sort=${sort}&order=${order}&genres=${genres}`)
         return response.data
     },
     getMovieById: async (id) => {
@@ -42,7 +42,7 @@ export const moviesAPI = {
         return response.data
     },
     editMovie: async (id, formData) => {
-        const response = await AXIOS.post(`/movies/${id}`, formData)
+        const response = await AXIOS.put(`/movies/${id}`, formData)
         return response.data
     },
     deleteMovie: async (id) => {

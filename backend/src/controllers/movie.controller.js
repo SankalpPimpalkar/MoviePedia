@@ -40,7 +40,7 @@ export async function createMovie(req, res) {
             rating,
             releaseDate,
             duration,
-            genres,
+            genres: genres.split(",").map(genre => genre.trim()),
             poster: uploadResult.secure_url,
             source: "ADMIN"
         });
@@ -78,10 +78,11 @@ export async function getMovies(req, res) {
 export async function searchMovies(req, res) {
     try {
         const {
-            q,                
-            page = 1,         
-            sort = "createdAt",  
-            order = "desc"      
+            q = "",
+            genres = "",
+            page = 1,
+            sort = "createdAt",
+            order = "desc"
         } = req.query;
 
         const PAGE_SIZE = 20;
@@ -89,7 +90,6 @@ export async function searchMovies(req, res) {
 
         const filter = {};
 
-        // 🔍 Search by title + description
         if (q.trim()) {
             filter.$or = [
                 { title: { $regex: q, $options: "i" } },
@@ -97,19 +97,30 @@ export async function searchMovies(req, res) {
             ];
         }
 
-        // 🔃 Sorting logic
+        if (!q.trim() && genres.trim()) {
+            const genreArray = genres
+                .split(",")
+                .map((g) => g.trim())
+                .filter(Boolean);
+
+
+            if (genreArray.length > 0) {
+                filter.genres = { $in: genreArray };
+            }
+        }
+
         const allowedSortFields = ["rating", "releaseDate", "duration", "createdAt"];
         const sortField = allowedSortFields.includes(sort) ? sort : "createdAt";
-
         const sortOrder = order === "asc" ? 1 : -1;
 
         const moviesQuery = Movie.find(filter)
             .sort({ [sortField]: sortOrder });
 
-        // 📄 Pagination only when NOT searching
-        if (!q.trim()) {
+        if (!q.trim() && !genres.trim()) {
             moviesQuery.skip(skip).limit(PAGE_SIZE);
         }
+
+        console.log(filter)
 
         const [movies, total] = await Promise.all([
             moviesQuery,
@@ -117,20 +128,21 @@ export async function searchMovies(req, res) {
         ]);
 
         return res.status(200).json({
-            page: q ? null : Number(page),
-            pageSize: q ? movies.length : PAGE_SIZE,
+            page: q || genres ? null : Number(page),
+            pageSize: q || genres ? movies.length : PAGE_SIZE,
             total,
             count: movies.length,
             movies
         });
 
     } catch (error) {
-        console.error("Error in Get Movies:", error);
+        console.error("Error in Search Movies:", error);
         return res
             .status(500)
             .json({ message: "Internal Server Error" });
     }
 }
+
 
 
 export async function getMovieById(req, res) {
