@@ -1,20 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>MoviePedia README</title>
-    <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; }
-        h1, h2, h3 { color: #FFF; }
-        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #232323; }
-        pre { background-color: #232323; padding: 10px; overflow-x: auto; }
-        code { background-color: #404040; padding: 2px 4px; border-radius: 4px; }
-    </style>
-</head>
-<body>
-
 <h1>MoviePedia 🎬</h1>
 
 <p><strong>MoviePedia</strong> is a full-stack movie catalog web application where users can explore and search for movies by title or description. Regular users can view movie details, while <strong>admins</strong> can <strong>upload</strong>, <strong>edit</strong>, or <strong>delete movies</strong>. The app features a React frontend (Vite) and a Node.js + Express backend with MongoDB.</p>
