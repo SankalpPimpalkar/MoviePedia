@@ -2,6 +2,12 @@
 
 <p><strong>MoviePedia</strong> is a full-stack movie catalog web application where users can explore and search for movies by title or description. Regular users can view movie details, while <strong>admins</strong> can <strong>upload</strong>, <strong>edit</strong>, or <strong>delete movies</strong>. The app features a React frontend (Vite) and a Node.js + Express backend with MongoDB.</p>
 
+<h2>Admin Credentials</h2>
+<p>Only users with admin access can create, update, or delete movies. Use the following credentials to log in as an admin:</p>
+<pre><code>Email: sankalp.pimpalkar.dev@gmail.com
+Password: moviepediabysankalp</code></pre>
+<p>⚠️ For security reasons, it is recommended to change the password after first login if deploying publicly.</p>
+
 <h2>Features</h2>
 <ul>
     <li>Browse movies with details (title, description, poster, etc.)</li>
