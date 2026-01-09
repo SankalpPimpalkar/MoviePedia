@@ -1,7 +1,7 @@
 import { Button, Container } from '@mui/material'
 import { useAuth } from '../../context/AuthProvider'
 import { Link, useNavigate } from 'react-router'
-import { Plus, Search } from "lucide-react"
+import { Github, Plus, Search } from "lucide-react"
 import { usersAPI } from '../../api/api'
 
 export default function Navbar() {
@@ -52,6 +52,10 @@ export default function Navbar() {
                                 </Button>
                             )
                     }
+
+                    <a title='MoviePedia' target='_blank' href='https://github.com/SankalpPimpalkar/MoviePedia' >
+                        <Github fill='white' className='size-5' />
+                    </a>
                 </span>
             </Container>
         </nav >
