@@ -9,7 +9,6 @@ import movieRouter from "./routes/movie.routes.js";
 
 const app = express()
 const __dirname = path.resolve()
-console.log(ENV)
 
 // Middlewares
 app.use(express.json())
