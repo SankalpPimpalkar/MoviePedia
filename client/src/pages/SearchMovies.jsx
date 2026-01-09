@@ -13,13 +13,11 @@ export default function SearchMovies() {
     const debouncedSearch = useDebounce(search, 500);
 
     useEffect(() => {
-        if (!debouncedSearch.trim()) return;
-
         (async () => {
             try {
                 setIsLoadingMovies(true);
                 const response = await moviesAPI.getSearchedMovies({
-                    q: debouncedSearch
+                    q: debouncedSearch.trim() || ""
                 });
                 console.log(response)
 
@@ -38,7 +36,7 @@ export default function SearchMovies() {
         (async () => {
             try {
                 setIsLoadingMovies(true);
-                const response = await moviesAPI.getAllMovies();
+                const response = await moviesAPI.getSearchedMovies();
 
                 if (Array.isArray(response.movies)) {
                     setMovies(response.movies);

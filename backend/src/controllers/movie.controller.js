@@ -58,23 +58,6 @@ export async function createMovie(req, res) {
     }
 }
 
-export async function getMovies(req, res) {
-    try {
-        const movies = await Movie.find().sort({ createdAt: -1 });
-
-        return res.status(200).json({
-            count: movies.length,
-            movies
-        });
-
-    } catch (error) {
-        console.error("Error in Get Movies:", error);
-        return res
-            .status(500)
-            .json({ message: "Internal Server Error" });
-    }
-}
-
 export async function searchMovies(req, res) {
     try {
         const {
@@ -84,6 +67,8 @@ export async function searchMovies(req, res) {
             sort = "createdAt",
             order = "desc"
         } = req.query;
+
+        console.log(req.query)
 
         const PAGE_SIZE = 20;
         const skip = (Number(page) - 1) * PAGE_SIZE;
